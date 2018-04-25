@@ -8,6 +8,10 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
+#define WEBHOOK_URL "" // Zapier webhook url
+
+#include <curl/curl.h>
+
 #include "conf.h"
 #include "sysdep.h"
 
@@ -22,6 +26,31 @@
 extern struct time_data time_info;
 extern struct room_data *world;
 
+/* Broadcasts a message externally */
+void extern_broadcast(char *type, char *string)
+{
+  CURL *curl;
+  CURLcode res;
+  char buf[5000];
+
+  curl_global_init(CURL_GLOBAL_ALL);
+  curl = curl_easy_init();
+  if(!curl)
+  {
+    basic_mud_log("Utils.c: Unable to easy_init curl");
+    curl_global_cleanup();
+    return;
+  }
+
+  curl_easy_setopt(curl, CURLOPT_URL, WEBHOOK_URL);
+  sprintf(buf,"type=%s&string=%s",type,string);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buf);
+  res = curl_easy_perform(curl);
+  if(res != CURLE_OK)
+  fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+  curl_easy_cleanup(curl);
+  curl_global_cleanup();
+}
 
 /* creates a random number in interval [from;to] */
 int number(int from, int to)
@@ -122,7 +151,7 @@ void log_death_trap(struct char_data * ch)
 {
   char buf[150];
   extern struct room_data *world;
-  
+
   sprintf(buf, "%s hit the %s death trap, ouch :-(\r\n", GET_NAME(ch),
           world[ch->in_room].name);
   send_to_all(buf);
@@ -490,7 +519,7 @@ int num_pc_in_room(struct room_data *room)
 int exp_to_level(struct char_data *ch)
 {
   int exp, level;
-   
+
   if(GET_LEVEL(ch) == 101 && GET_CLASS(ch) == CLASS_MASTER)
     level = GET_LEVEL(ch) + EXTRA_LEVEL(ch);
   else
@@ -520,10 +549,10 @@ int replace_str(char **string, char *pattern, char *replacement, int rep_all,
    char *replace_buffer = NULL;
    char *flow, *jetsam, temp;
    int len, i;
-   
+
    if ((strlen(*string) - strlen(pattern)) + strlen(replacement) > max_size)
      return -1;
-   
+
    CREATE(replace_buffer, char, max_size);
    i = 0;
    jetsam = *string;
@@ -549,9 +578,9 @@ int replace_str(char **string, char *pattern, char *replacement, int rep_all,
    else {
       if ((flow = (char *)strstr(*string, pattern)) != NULL) {
 	 i++;
-	 flow += strlen(pattern);  
+	 flow += strlen(pattern);
 	 len = ((char *)flow - (char *)*string) - strlen(pattern);
-   
+
 	 strncpy(replace_buffer, *string, len);
 	 strcat(replace_buffer, replacement);
 	 strcat(replace_buffer, flow);
@@ -574,7 +603,7 @@ void format_text(char **ptr_string, int mode, struct descriptor_data *d, int max
    char *flow, *start = NULL, temp;
    /* warning: do not edit messages with max_str's of over this value */
    char formated[MAX_STRING_LENGTH];
-   
+
    flow   = *ptr_string;
    if (!flow) return;
 
@@ -585,7 +614,7 @@ void format_text(char **ptr_string, int mode, struct descriptor_data *d, int max
    else {
       *formated = '\0';
       total_chars = 0;
-   } 
+   }
 
    while (*flow != '\0') {
       while ((*flow == '\n') ||
@@ -619,7 +648,7 @@ void format_text(char **ptr_string, int mode, struct descriptor_data *d, int max
 	    cap_next_next = TRUE;
 	    flow++;
 	 }
-	 
+
 	 temp = *flow;
 	 *flow = '\0';
 
@@ -662,7 +691,7 @@ void format_text(char **ptr_string, int mode, struct descriptor_data *d, int max
    RECREATE(*ptr_string, char, MIN(maxlen, strlen(formated)+3));
    strcpy(*ptr_string, formated);
 }
-  
+
 /* strips \r's from line */
 char *stripcr(char *dest, const char *src) {
    int i, length;

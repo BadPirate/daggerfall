@@ -9,23 +9,6 @@
 ************************************************************************ */
 
 
-// Includes / Prototypes
-#ifndef COMM_H
-#include "comm.h"
-#endif
-
-#ifndef STRUCTS_H
-#include "structs.h"
-#endif
-
-#ifndef SYSDEP_H
-#include "sysdep.h"
-#endif
-
-#ifndef CONF_H
-#include "conf.h"
-#endif
-
 /* external declarations and prototypes **********************************/
 
 extern struct weather_data weather_info;
@@ -51,6 +34,7 @@ int	num_pc_in_room(struct room_data *room);
 int     replace_str(char **string, char *pattern, char *replacement, int rep_all, int max_size);
 void    format_text(char **ptr_string, int mode, struct descriptor_data *d, int maxlen);
 char   *stripcr(char *dest, const char *src);
+void extern_broadcast(char *type, char *string);
 
 /* undefine MAX and MIN so that our functions are used instead */
 #ifdef MAX

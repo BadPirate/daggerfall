@@ -330,7 +330,7 @@ const struct command_info cmd_info[] = {
   { "curse"    , POS_RESTING , do_action   , 0, 0 },
   { "curtsey"  , POS_STANDING, do_action   , 0, 0 },
   { "corpse"   , POS_STANDING, do_not_here  , 0, 0 },
-  
+
   { "dance"    , POS_STANDING, do_action   , 0, 0 },
   { "date"     , POS_DEAD    , do_date     , LVL_IMMORT, SCMD_DATE },
   { "daydream" , POS_SLEEPING, do_action   , 0, 0 },
@@ -376,7 +376,7 @@ const struct command_info cmd_info[] = {
   { "get"      , POS_RESTING , do_get      , 0, 0 },
   { "gact"     , POS_SLEEPING, do_action   , 0, SCMD_GACT },
   { "gasp"     , POS_RESTING , do_action   , 0, 0 },
-  { "gamble"   , POS_STANDING, do_not_here , 0, 0 },  
+  { "gamble"   , POS_STANDING, do_not_here , 0, 0 },
   { "gecho"    , POS_DEAD    , do_gecho    , LVL_GOD, 0 },
   { "give"     , POS_RESTING , do_give     , 0, 0 },
   { "giggle"   , POS_RESTING , do_action   , 0, 0 },
@@ -756,7 +756,7 @@ void command_interpreter(struct char_data *ch, char *argument)
 
   if (*cmd_info[cmd].command == '\n')
   {
-    noise = number(1,15); 
+    noise = number(1,15);
     switch(noise)
     {
       case 1:
@@ -1195,7 +1195,7 @@ char *two_arguments(char *argument, char *first_arg, char *second_arg)
  * (now works symmetrically -- JE 7/25/94)
  *
  * that was dumb.  it shouldn't be symmetrical.  JE 5/1/95
- * 
+ *
  * returnss 1 if arg1 is an abbreviation of arg2
  */
 int is_abbrev(char *arg1, char *arg2)
@@ -1494,7 +1494,7 @@ int check_immortplay(struct descriptor_data *d)
   {
     for ( multi = descriptor_list; multi; multi = multi->next)
       if(multi->character)
-        if(GET_LEVEL(multi->character) >= LVL_IMMORT && 
+        if(GET_LEVEL(multi->character) >= LVL_IMMORT &&
            strcmp(d->host,multi->host) == 0) //  Is he Immortal and same?
         {
           switch(IMMORTPLAY)
@@ -1504,13 +1504,13 @@ int check_immortplay(struct descriptor_data *d)
               SEND_TO_Q("It's frowned upon to have mort/immort on at same time\r\n", d);
               sprintf(buf, "%s and %s breaking mort/immort rule",
                       GET_NAME(d->character), GET_NAME(multi->character));
-              mudlog(buf, NRM, LVL_IMMORT, TRUE); 
+              mudlog(buf, NRM, LVL_IMMORT, TRUE);
               return TRUE; break;
             case 2:
               SEND_TO_Q("Sorry, you may not have mort and immort on at same time\r\n", d);
               STATE(d) = CON_CLOSE;
               sprintf(buf, "Connection for %s closed due to mort/immort",
-                      GET_NAME(d->character)); 
+                      GET_NAME(d->character));
               mudlog(buf, NRM, LVL_IMMORT, TRUE);
               return FALSE; break;
             default:
@@ -1519,7 +1519,7 @@ int check_immortplay(struct descriptor_data *d)
           }
         }
   }
-  else 
+  else
   {
     for ( multi = descriptor_list; multi; multi = multi->next)
       if(multi->character)
@@ -1533,13 +1533,13 @@ int check_immortplay(struct descriptor_data *d)
               SEND_TO_Q("It's frowned upon to have mort/immort on at same time\r\n", d);
               sprintf(buf, "%s and %s breaking mort/immort rule",
                       GET_NAME(d->character), GET_NAME(multi->character));
-              mudlog(buf, NRM, LVL_IMMORT, TRUE); 
+              mudlog(buf, NRM, LVL_IMMORT, TRUE);
               return TRUE; break;
             case 2:
               SEND_TO_Q("Sorry, you may not have mort and immort on at same time\r\n", d);
               STATE(d) = CON_CLOSE;
               sprintf(buf, "Connection for %s closed due to mort/immort",
-                      GET_NAME(d->character)); 
+                      GET_NAME(d->character));
               mudlog(buf, NRM, LVL_IMMORT, TRUE);
               return FALSE; break;
             default:
@@ -1555,7 +1555,7 @@ int check_multiplay(struct descriptor_data *d)
 {
   int multicount=0;
   struct descriptor_data *multi;
-  
+
   if(strcmp("matrix.centerpartners.com",d->host) == 0)
   {
     SEND_TO_Q("Your site has been allowed to multiplay", d);
@@ -1564,18 +1564,18 @@ int check_multiplay(struct descriptor_data *d)
 
   if (MULTIPLAY != -1)
   {
-    for ( multi = descriptor_list; multi; multi = multi->next) 
-      if (strcmp(d->host,multi->host) == 0)    
-        multicount++; 
+    for ( multi = descriptor_list; multi; multi = multi->next)
+      if (strcmp(d->host,multi->host) == 0)
+        multicount++;
     if(multicount > MULTIPLAY)
     {
-                 
+
       sprintf(buf, "Sorry, you are only allowed %d chars from same IP",
               MULTIPLAY);
       SEND_TO_Q(buf, d);
       STATE(d) = CON_CLOSE;
       sprintf(buf, "Connection for %s closed due to multiplay %d",
-              GET_NAME(d->character), MULTIPLAY); 
+              GET_NAME(d->character), MULTIPLAY);
       mudlog(buf, NRM, LVL_IMMORT, TRUE);
       return FALSE;
     }
@@ -1605,30 +1605,30 @@ void nanny(struct descriptor_data *d, char *arg)
 
   skip_spaces(&arg);
 
-  switch (STATE(d)) { 
+  switch (STATE(d)) {
 
   /*. OLC states .*/
   case CON_CLAN_EDIT:         /* Editing clans */
     parse_clan_edit(d, arg);
     break;
-  case CON_OEDIT: 
+  case CON_OEDIT:
     oedit_parse(d, arg);
     break;
-  case CON_REDIT: 
+  case CON_REDIT:
     redit_parse(d, arg);
     break;
   case CON_ZEDIT:
     zedit_parse(d, arg);
     break;
-  case CON_MEDIT: 
+  case CON_MEDIT:
     medit_parse(d, arg);
     break;
-  case CON_SEDIT: 
+  case CON_SEDIT:
     sedit_parse(d, arg);
     break;
   /*. End of OLC states .*/
 
-  case CON_GET_NAME:		/* wait for input of name */    
+  case CON_GET_NAME:		/* wait for input of name */
     if (d->character == NULL) {
       CREATE(d->character, struct char_data, 1);
       clear_char(d->character);
@@ -1789,6 +1789,7 @@ void nanny(struct descriptor_data *d, char *arg)
         fclose(counterfile);
       }
       sprintf(buf, "%s [%s] has connected.", GET_NAME(d->character), d->host);
+      extern_broadcast("connected",GET_NAME(d->character));
       mudlog(buf, BRF, MAX(LVL_IMMORT, GET_INVIS_LEV(d->character)), TRUE);
 
       if (load_result) {

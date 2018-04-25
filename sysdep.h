@@ -33,7 +33,6 @@
  */
 
 /* Standard C headers  *************************************************/
-#define SYSDEP_H
 
 #include <stdio.h>
 #include <ctype.h>

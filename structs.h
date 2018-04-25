@@ -8,8 +8,6 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
-#define STRUCTS_H
-#include <sys/socket.h>
 
 /* preamble *************************************************************/
 
@@ -765,7 +763,7 @@ struct char_point_data {
 };
 
 
-/*
+/* 
  * char_special_data_saved: specials which both a PC and an NPC have in
  * common, but which must be saved to the playerfile for PC's.
  *
@@ -835,7 +833,7 @@ struct player_special_data_saved {
    int clannum;			/* Index number of clan you belong to (FIDO) */
    int extralevel;	        /* Levels "Beyond" 101 */
    int clanrank;                /* Rank within clan */
-   int spare12;
+   int spare12;		
    int spare13;
    int spare14;
    int spare15;

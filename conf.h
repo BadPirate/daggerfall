@@ -5,8 +5,6 @@
 /* Define to empty if the keyword does not work.  */
 /* #undef const */
 
-#define CONF_H
-
 /* Define if you have <sys/wait.h> that is POSIX.1 compatible.  */
 #define HAVE_SYS_WAIT_H 1
 

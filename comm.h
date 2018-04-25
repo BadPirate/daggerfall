@@ -8,15 +8,9 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
-#define COMM_H
-
 #define NUM_RESERVED_DESCS	8
 
 #define COPYOVER_FILE "copyover.dat"
-
-#ifndef RETSIGTYPE
-#define RETSIGTYPE void
-#endif
 
 /* comm.c */
 void	send_to_all(char *messg);
